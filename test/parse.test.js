@@ -8,7 +8,13 @@ var basicFixture = fs
   .toString();
 
 tape('parsing the basic fixture', function(assert) {
-  var rules = parse(basicFixture);
+  try {
+    var parsed = parse(basicFixture);
+  } catch (err) {
+    return assert.end(err);
+  }
+
+  var rules = parsed.rules;
 
   assert.ok(typeof rules === 'object');
   var ruleNames = Object.keys(rules);
@@ -21,21 +27,33 @@ tape('parsing the basic fixture', function(assert) {
 
   assert.deepEquals(actionNames, ['fallback', 'first', 'customNamedAction']);
 
-  assert.deepEquals(rules.fallback.limits.duration, { min: 0, max: Infinity });
-  assert.deepEquals(rules.first.limits.duration, { min: 0, max: 100 });
-  assert.deepEquals(rules.second.limits.duration, { min: 50, max: 100 });
+  check(assert, rules, 'duration', {
+    fallback: { min: 0, max: Infinity },
+    first: { min: 0, max: 100 },
+    second: { min: 50, max: 100 }
+  });
 
-  assert.deepEquals(rules.fallback.limits.hasHighway, [true, false]);
-  assert.deepEquals(rules.first.limits.hasHighway, [true]);
-  assert.deepEquals(rules.second.limits.hasHighway, [false]);
+  check(assert, rules, 'hasHighway', {
+    fallback: [false, true],
+    first: [true],
+    second: [false]
+  });
 
-  assert.deepEquals(rules.fallback.limits.type, [
-    'preturn',
-    'turn',
-    'postturn'
-  ]);
-  assert.deepEquals(rules.first.limits.type, ['preturn', 'turn']);
-  assert.deepEquals(rules.second.limits.type, ['preturn', 'turn', 'postturn']);
+  check(assert, rules, 'type', {
+    fallback: ['postturn', 'preturn', 'turn'],
+    first: ['preturn', 'turn'],
+    second: ['postturn', 'preturn', 'turn']
+  });
 
   assert.end();
 });
+
+function check(assert, rules, limitName, values) {
+  Object.keys(values).forEach(function(ruleName) {
+    assert.deepEqual(
+      rules[ruleName].limits[limitName],
+      values[ruleName],
+      `${ruleName} should have expected value for ${limitName}`
+    );
+  });
+}
