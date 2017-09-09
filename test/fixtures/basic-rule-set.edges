@@ -1,0 +1,21 @@
+
+// you must have a fallback rule, its action must be fallback
+// all other rules must be limited within the constraints of fallback
+
+fallback:
+  duration: 0 - Infinity
+  hasHighway: true, false
+  type: preturn, turn, postturn
+
+first:
+  duration: 0 - 100
+  hasHighway: true
+  type: preturn, turn
+
+second: customNamedAction
+  durtion: 50 - 100
+  hasHighway: false
+  type: *
+
+
+
