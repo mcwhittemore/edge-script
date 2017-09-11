@@ -3,12 +3,12 @@
 // all other rules must be limited within the constraints of fallback
 
 fallback:
-  duration: 0 - Infinity
+  duration: 0 - 115
   hasHighway: true, false
   type: preturn, turn, postturn
 
 first:
-  duration: 0 - 100
+  duration: 0 - 75
   hasHighway: true
   type: preturn, turn
 

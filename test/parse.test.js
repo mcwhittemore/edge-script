@@ -28,8 +28,8 @@ tape('parsing the basic fixture', function(assert) {
   assert.deepEquals(actionNames, ['fallback', 'first', 'customNamedAction']);
 
   check(assert, rules, 'duration', {
-    fallback: { min: 0, max: Infinity },
-    first: { min: 0, max: 100 },
+    fallback: { min: 0, max: 115 },
+    first: { min: 0, max: 75 },
     second: { min: 50, max: 100 }
   });
 
