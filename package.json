@@ -24,5 +24,9 @@
   "lint-staged": {
     "*.json": ["prettier --single-quote --write", "git add"],
     "*.js": ["eslint .", "prettier --single-quote --write", "git add"]
+  },
+  "dependencies": {
+    "ndarray": "^1.0.18",
+    "save-pixels": "^2.3.4"
   }
 }
